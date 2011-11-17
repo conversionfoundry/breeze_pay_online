@@ -1,0 +1,47 @@
+<% content_for :title, "Payments" %>
+
+<%= pane_layout do |layout| %>
+  <%= layout.header do %>
+    
+  <% end %>
+  <%= layout.inner do %>
+    <div class="payments container">
+      <table class="fancy">
+        <thead>
+          <tr>
+            <th>Date</th><th>Name</th><th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @payments.each do |payment| %>
+            <tr>
+              <td><%= payment.created_at.to_formatted_s(:short) %></td>
+              <td><%= link_to payment.name, admin_payment_path(payment), :target => :_blank %></td>
+              <td><%= payment.email || "—" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4"><%= will_paginate @payments %></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+
+<% content_for :left do %>
+  <%= pane_layout do |layout| %>
+    <%= layout.header do %>
+      <h2>Payments</h2>
+    <% end %>
+    <%= layout.inner do %>
+
+    <% end %>
+  <% end %>
+<% end %>
+
+<% content_for :head do %>
+  <%= stylesheet_link_tag "/breeze/stylesheets/payments.css" %>
+<% end %>
