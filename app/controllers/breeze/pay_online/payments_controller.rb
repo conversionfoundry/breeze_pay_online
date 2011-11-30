@@ -1,15 +1,60 @@
 module Breeze
   module PayOnline
-    class PaymentsController < Breeze::Admin::AdminController
-      def index
-        @payments = Payment.desc(:created_at).paginate :per_page => 20, :page => params[:page]
+    class PaymentsController < ApplicationController
+
+      before_filter :find_payment, :only => [:edit, :update, :pxpay_success, :pxpay_failure, :show]
+
+      def new
+        @payment = Payment.new
       end
-      
-      def show
-        @payment = Breeze::PayOnline::Payment.find params[:id]
-        render :layout => "enquiry"
+
+      def create
+        @payment = Payment.new params[:payment]
+        if @payment.save and redirectable?
+          redirect_to @payment.redirect_url
+        else
+          render :new
+        end
       end
-      
+
+      def update
+        if @payment.update_attributes params[:payment] and redirectable?
+          redirect_to @payment.redirect_url
+        else
+          render :new
+        end    
+      end
+
+      def pxpay_success
+        #response = Pxpay::Response.new(params).response
+        #render :text => response.to_hash.to_yaml
+        @payment.update_attributes :succeded => true
+        redirect_to @payment
+      end
+
+      def pxpay_failure
+        @payment.errors.add :base, "Couldn't process payment. Please try again."
+        render :edit
+      end
+
+    private
+
+      def find_payment
+        @payment = Payment.find params[:id]
+      end
+
+      def redirectable?
+        @payment.pxpay_urls = pxpay_urls
+        @payment.redirect_url.present?
+      end
+
+      def pxpay_urls
+        {
+          :url_success => pxpay_success_payment_url(@payment),
+          :url_failure => pxpay_failure_payment_url(@payment)
+        }
+      end
+
     end
   end
 end
