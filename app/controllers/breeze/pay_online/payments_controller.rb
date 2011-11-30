@@ -9,7 +9,7 @@ module Breeze
       end
 
       def create
-        @payment = Payment.new params[:payment]
+        @payment = Payment.new params[:breeze_pay_online_payment]
         if @payment.save and redirectable?
           redirect_to @payment.redirect_url
         else
@@ -18,7 +18,7 @@ module Breeze
       end
 
       def update
-        if @payment.update_attributes params[:payment] and redirectable?
+        if @payment.update_attributes params[:breeze_pay_online_payment] and redirectable?
           redirect_to @payment.redirect_url
         else
           render :new
@@ -50,8 +50,8 @@ module Breeze
 
       def pxpay_urls
         {
-          :url_success => pxpay_success_payment_url(@payment),
-          :url_failure => pxpay_failure_payment_url(@payment)
+          :url_success => pxpay_success_breeze_pay_online_payment_url(@payment),
+          :url_failure => pxpay_failure_breeze_pay_online_payment_url(@payment)
         }
       end
 
