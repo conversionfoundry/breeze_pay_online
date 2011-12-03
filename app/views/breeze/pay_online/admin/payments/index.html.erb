@@ -19,7 +19,7 @@
           <% @payments.each do |payment| %>
             <tr>
               <td><%= payment.created_at.to_formatted_s(:short) %></td>
-              <td><%= payment.succeded %></td>
+              <td><%= payment.succeeded %></td>
               <td><%= payment.reference %></td>
               <td style="text-align:right"><%= number_to_currency payment.amount %></td>
               <td><%= payment.name %></td>
@@ -37,10 +37,16 @@
   <% end %>
 
   <% tabs.settings do %>
+    <h1 id="online_payment_settings">Online Payment Settings</h1>
     <%= breeze_form_for Breeze.config, :as => :settings, :url => admin_settings_path, :method => :put do |form| %>
       <%= form.fieldset :legend => "DPS Credentials" do %>
         <%= form.text_field :pxpay_user_id, :label => "PxPay User ID" %>
         <%= form.text_field :pxpay_key, :label => "PxPay Key" %>
+      <% end %>
+      <%= form.fieldset :legend => "Receipt Email" do %>
+        <p style="color:#777">Edit this email at <code>[theme]/breeze/pay_online/payment_mailer/receipt_email.html.erb</code></p>
+        <%= form.text_field :pxpay_receipt_from, :label => "Send receipt from" %>
+        <%= form.text_field :pxpay_receipt_subject, :label => "Receipt subject" %>
       <% end %>
       <%= form.submit "Save settings", :class => "large green save button" %>
     <% end %>

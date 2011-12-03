@@ -28,7 +28,7 @@ module Breeze
       def pxpay_success
         #response = Pxpay::Response.new(params).response
         #render :text => response.to_hash.to_yaml
-        @payment.update_attributes :succeded => true
+        @payment.update_attributes :succeeded => true
         redirect_to @payment
       end
 

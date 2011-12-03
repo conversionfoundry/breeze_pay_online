@@ -1,4 +1,4 @@
-class Breeze::PayOnline::PaymentMailer < Breeze::Mailer
+class Breeze::PayOnline::PaymentMailer < ActionMailer::Base #Breeze::Mailer
 
   def receipt_email(payment)
     @payment = payment

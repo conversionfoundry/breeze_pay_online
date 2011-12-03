@@ -8,7 +8,9 @@ module Breeze
       field :email
       field :amount
       field :reference
-      field :succeded
+      field :succeeded, type: Boolean
+      field :receipt_delivered, type: Boolean
+      field :obfuscated_credit_card
 
       attr_accessor :connect_now
       attr_accessor :process_now
@@ -23,18 +25,18 @@ module Breeze
       alias_attribute :customer_name, :name
       alias_attribute :customer_email, :email
 
-      after_save :deliver_receipt, :if => :succeded
+      before_save :deliver_receipt, :if => [:succeeded, :receipt_undelivered?]
 
       def redirect_url
         @redirect_url ||= pxpay_request.url rescue add_gateway_error
       end
 
       def admin_email
-        nil
+        Breeze.config.pxpay_receipt_from
       end
 
       def subject
-        nil
+        Breeze.config.pxpay_receipt_subject
       end
 
     private
@@ -63,8 +65,12 @@ module Breeze
         nil
       end
 
+      def receipt_undelivered?
+        not receipt_delivered
+      end
+
       def deliver_receipt
-        PaymentMailer.receipt_email(self).deliver
+        PaymentMailer.receipt_email(self).deliver and self.receipt_delivered = true
       end
 
     end

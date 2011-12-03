@@ -1,0 +1,7 @@
+<p>Hi <%= @payment.customer_name %>,</p>
+
+<p>
+  Your payment for <%= number_to_currency @payment.amount %> was successful.
+  We have charged this to your credit card <%= @payment.obfuscated_credit_card %>.
+  Your reference number is <%= @payment.reference %>.
+</p>
