@@ -1,10 +1,8 @@
 <% content_for :title, "Payments" %>
 
-<%= pane_layout do |layout| %>
-  <%= layout.header do %>
-    
-  <% end %>
-  <%= layout.inner do %>
+<%= tabbed_layout do |tabs| %>
+
+  <% tabs.payments do %>
     <div class="payments container">
       <table class="fancy">
         <thead>
@@ -37,6 +35,17 @@
       </table>
     </div>
   <% end %>
+
+  <% tabs.settings do %>
+    <%= breeze_form_for Breeze.config, :as => :settings, :url => admin_settings_path, :method => :put do |form| %>
+      <%= form.fieldset :legend => "DPS Credentials" do %>
+        <%= form.text_field :pxpay_user_id, :label => "PxPay User ID" %>
+        <%= form.text_field :pxpay_key, :label => "PxPay Key" %>
+      <% end %>
+      <%= form.submit "Save settings", :class => "large green save button" %>
+    <% end %>
+  <% end %>
+
 <% end %>
 
 <% content_for :left do %>
@@ -48,8 +57,4 @@
 
     <% end %>
   <% end %>
-<% end %>
-
-<% content_for :head do %>
-  <%= stylesheet_link_tag "/breeze/stylesheets/payments.css" %>
 <% end %>
