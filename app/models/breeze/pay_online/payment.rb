@@ -16,11 +16,25 @@ module Breeze
 
       validates_presence_of :name
       validates_presence_of :email
+      validates_format_of :email, :with => /@.*?\./
       validates_presence_of :reference
       validates_numericality_of :amount
 
+      alias_attribute :customer_name, :name
+      alias_attribute :customer_email, :email
+
+      after_save :deliver_receipt, :if => :succeded
+
       def redirect_url
         @redirect_url ||= pxpay_request.url rescue add_gateway_error
+      end
+
+      def admin_email
+        nil
+      end
+
+      def subject
+        nil
       end
 
     private
@@ -47,6 +61,10 @@ module Breeze
       def add_gateway_error
         errors.add :base, "Couldn't connect to payment server. Please try again later."
         nil
+      end
+
+      def deliver_receipt
+        PaymentMailer.receipt_email(self).deliver
       end
 
     end
