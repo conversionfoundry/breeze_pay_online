@@ -20,18 +20,14 @@ module Breeze
       validates_numericality_of :amount
 
       def redirect_url
-        @redirect_url ||= pxpay_request.try :url
+        @redirect_url ||= pxpay_request.url rescue add_gateway_error
       end
 
     private
 
       def pxpay_request
-        begin
-          Pxpay::Request.new(pxpay_id, amount.to_f, pxpay_options)
-        rescue
-          errors.add :base, "Couldn't connect to payment server. Please try again later."
-          nil
-        end
+        setup_credentials
+        Pxpay::Request.new(pxpay_id, amount.to_f, pxpay_options)
       end
 
       def pxpay_options
@@ -41,6 +37,16 @@ module Breeze
       # NB: Make new transaction id for every time we attempt to connect
       def pxpay_id
         Time.now.to_i
+      end
+
+      def setup_credentials
+        Pxpay::Base.pxpay_user_id = Breeze.config.pxpay_user_id
+        Pxpay::Base.pxpay_key     = Breeze.config.pxpay_key
+      end
+
+      def add_gateway_error
+        errors.add :base, "Couldn't connect to payment server. Please try again later."
+        nil
       end
 
     end
