@@ -10,7 +10,7 @@ module Breeze
       field :reference
       field :succeeded, type: Boolean
       field :receipt_delivered, type: Boolean
-      field :obfuscated_credit_card
+      field :pxpay_response, type: Hash
 
       attr_accessor :connect_now
       attr_accessor :process_now
@@ -37,6 +37,19 @@ module Breeze
 
       def subject
         Breeze.config.pxpay_receipt_subject
+      end
+
+      def update_pxpay_attributes(params)
+        self.pxpay_response = Pxpay::Response.new(params).response.to_hash rescue {}
+        save
+      end
+
+      def obfuscated_card_number
+        pxpay_response[:card_number]
+      end
+
+      def pxpay_reponse_text
+        pxpay_response[:response_text]
       end
 
     private

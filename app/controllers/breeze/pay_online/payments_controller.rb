@@ -26,14 +26,15 @@ module Breeze
       end
 
       def pxpay_success
-        #response = Pxpay::Response.new(params).response
-        #render :text => response.to_hash.to_yaml
-        @payment.update_attributes :succeeded => true
+        @payment.succeeded = true
+        @payment.update_pxpay_attributes params
         redirect_to @payment
       end
 
       def pxpay_failure
+        @payment.update_pxpay_attributes params
         @payment.errors.add :base, "Couldn't process payment. Please try again."
+        @payment.errors.add :base, "The payment server responded: #{@payment.pxpay_reponse_text}" if @payment.pxpay_reponse_text
         render :edit
       end
 
