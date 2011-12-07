@@ -13,6 +13,7 @@
             <th style="text-align:right">Amount</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Credit Card</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
               <td style="text-align:right"><%= number_to_currency payment.amount %></td>
               <td><%= payment.name %></td>
               <td><%= payment.email || "—" %></td>
+              <td><%= payment.obfuscated_card_number || "-" %></td>
             </tr>
           <% end %>
         </tbody>

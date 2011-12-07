@@ -34,7 +34,7 @@ module Breeze
       def pxpay_failure
         @payment.update_pxpay_attributes params
         @payment.errors.add :base, "Couldn't process payment. Please try again."
-        @payment.errors.add :base, "The payment server responded: #{@payment.pxpay_reponse_text}" if @payment.pxpay_reponse_text
+        @payment.errors.add :base, "The payment server responded: #{@payment.pxpay_response_text}" if @payment.pxpay_response_text
         render :edit
       end
 

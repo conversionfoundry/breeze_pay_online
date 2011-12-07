@@ -44,12 +44,16 @@ module Breeze
         save
       end
 
-      def obfuscated_card_number
-        pxpay_response[:card_number]
+      def pxpay_response
+        read_attribute :pxpay_response or Hash.new
       end
 
-      def pxpay_reponse_text
-        pxpay_response[:response_text]
+      def obfuscated_card_number
+        pxpay_response.symbolize_keys[:card_number]
+      end
+
+      def pxpay_response_text
+        pxpay_response.symbolize_keys[:response_text]
       end
 
     private
