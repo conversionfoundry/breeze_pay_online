@@ -9,6 +9,30 @@ module Breeze
         string_field :amount,         :label => "I'm paying",       :validate => true
       end
 
+
+      def render!
+        if request.post?
+          if request.params[:next_button] && next?
+            if valid?
+              data[:_step] = self.next.name
+              save_data_to controller.session
+              unless self.next.next?
+                # TODO: I think we need to overwrite this bit
+                application = form.application_class.factory(self)
+                application.save
+              end
+              controller.redirect_to form.permalink and return false
+            end
+          elsif request.params[:back_button] && previous?
+            data[:_step] = self.previous.name
+            save_data_to controller.session
+            controller.redirect_to form.permalink and return false
+          end
+        end
+        
+        super # this could be problematic
+      end
+
     end
   end
 end
