@@ -17,11 +17,21 @@ module Breeze
               data[:_step] = self.next.name
               save_data_to controller.session
               unless self.next.next?
-                # TODO: I think we need to overwrite this bit
-                Payment.create! :name => request.params[:form][:customer_name],
-                  :email => request.params[:form][:email],
-                  :reference => request.params[:form][:reference],
-                  :amount => request.params[:form][:amount]
+                payment = Payment.new :name => request.params[:form][:customer_name],
+                                :email => request.params[:form][:email],
+                                :reference => request.params[:form][:reference],
+                                :amount => request.params[:form][:amount]
+                payment.pxpay_urls = {
+                  :url_success => 'http://www.example.com/success',
+                  :url_failure => 'http://www.example.com/success'
+                }
+                if payment.save and payment.redirect_url.present?
+                  controller.redirect_to payment.redirect_url and return
+                else
+                  # TODO: record error messages
+                  Rails.logger.debug payment.errors.to_yaml
+                  data[:_step] = self.name
+                end
               end
               controller.redirect_to form.permalink and return false
             end
