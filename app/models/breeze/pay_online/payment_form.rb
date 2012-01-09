@@ -18,8 +18,10 @@ module Breeze
               save_data_to controller.session
               unless self.next.next?
                 # TODO: I think we need to overwrite this bit
-                application = form.application_class.factory(self)
-                application.save
+                Payment.create! :name => request.params[:form][:customer_name],
+                  :email => request.params[:form][:email],
+                  :reference => request.params[:form][:reference],
+                  :amount => request.params[:form][:amount]
               end
               controller.redirect_to form.permalink and return false
             end
@@ -29,8 +31,10 @@ module Breeze
             controller.redirect_to form.permalink and return false
           end
         end
-        
-        super # this could be problematic
+        Rails.logger.debug 'here'
+        Breeze::Content::PageView.instance_method(:render!).bind(self).call
+        Rails.logger.debug 'and here'
+        #super # this could be problematic
       end
 
     end
