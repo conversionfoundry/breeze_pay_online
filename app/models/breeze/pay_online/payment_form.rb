@@ -9,6 +9,9 @@ module Breeze
         string_field :amount,         :label => "I'm paying",       :validate => true
       end
 
+      def pxpay_url(payment)
+        request.protocol + request.host_with_port + form.permalink + '/' + payment.id.to_s
+      end
 
       def render!
         if request.post?
@@ -21,12 +24,12 @@ module Breeze
                                 :email => request.params[:form][:email],
                                 :reference => request.params[:form][:reference],
                                 :amount => request.params[:form][:amount]
-                payment.pxpay_urls = {
-                  :url_success => 'http://www.example.com/success',
-                  :url_failure => 'http://www.example.com/success'
-                }
-                if payment.save and payment.redirect_url.present?
-                  controller.redirect_to payment.redirect_url and return
+                if payment.save                  
+                  payment.pxpay_urls = {
+                    :url_success => pxpay_url(payment) + '/pxpay_success',
+                    :url_failure => pxpay_url(payment) + '/pxpay_failure',
+                  }
+                  controller.redirect_to payment.redirect_url and return if payment.redirect_url.present?
                 else
                   # TODO: record error messages
                   Rails.logger.debug payment.errors.to_yaml
