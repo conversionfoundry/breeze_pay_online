@@ -19,8 +19,6 @@ module Breeze
         end
       end
 
-
-
     protected
 
       def define_form_pages
