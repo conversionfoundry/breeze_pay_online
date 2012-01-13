@@ -9,7 +9,7 @@ In your `config/giternal.yml`:
 
 In your `Gemfile`:
 
-    gem "pxpay"
+    gem "pxpay", "0.2.6"
 
 And finally, in `config/initializers/forms.rb`:
 
