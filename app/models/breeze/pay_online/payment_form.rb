@@ -42,6 +42,7 @@ module Breeze
         end
 
         # Skip ApplyOnline::ApplicationPage render!
+        request.format = 'html' # circumvents problem where DPS FPRN doesn't set mime-type
         Breeze::Content::PageView.instance_method(:render!).bind(self).call
       end
 
