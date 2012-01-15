@@ -40,6 +40,7 @@ module Breeze
       end
 
       def update_pxpay_attributes(params)
+        setup_credentials
         self.pxpay_response = Pxpay::Response.new(params).response.to_hash rescue {}
         save
       end
