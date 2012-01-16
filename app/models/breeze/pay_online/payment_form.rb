@@ -4,12 +4,13 @@ module Breeze
 
       attr_accessor :payment
 
-      field_group :payment_details do
-        string_field :customer_name,  :label => "My name is",       :validate => true
-        string_field :email,          :label => "My email is",      :validate => true
-        string_field :reference,      :label => "My reference is",  :validate => true
-        string_field :amount,         :label => "I'm paying",       :validate => true
-      end
+      #-- Implement this in your subclass
+      #field_group :payment_details do
+      #  string_field :customer_name,  :validate => true
+      #  string_field :email,          :validate => true
+      #  string_field :reference,      :validate => true
+      #  string_field :amount,         :validate => true
+      #end
 
       def render!
         if @payment = page.payment
