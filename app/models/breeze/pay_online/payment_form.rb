@@ -13,20 +13,20 @@ module Breeze
       #end
 
       def render!
+        Rails.logger.debug "render".red
         if @payment = page.payment
           @payment.succeeded? ? (pxpay_success and return) : pxpay_failure
         end
         if request.post?
           if request.params[:next_button] && next?
+            Rails.logger.debug valid?.to_s
             if valid?
               unless self.next.next?
-                @payment = Payment.new :name      => request.params[:form][:customer_name],
-                                       :email     => request.params[:form][:email],
-                                       :reference => request.params[:form][:reference],
-                                       :amount    => request.params[:form][:amount]
+                @payment = create_payment
                 if @payment.save and redirectable?
                   controller.redirect_to @payment.redirect_url and return
                 else
+                  Rails.logger.debug @payment.errors.to_s.blue
                   @payment.errors.each { |attrib, err| errors.add attrib, err }
                 end
               else
@@ -45,6 +45,14 @@ module Breeze
         # Skip ApplyOnline::ApplicationPage render!
         request.format = 'html' # circumvents problem where DPS FPRN doesn't set mime-type
         Breeze::Content::PageView.instance_method(:render!).bind(self).call
+      end
+
+      def create_payment
+        Payment.new :name      => request.params[:form][:customer_name],
+                    :email     => request.params[:form][:email],
+                    :reference => request.params[:form][:reference],
+                    :amount    => request.params[:form][:amount]
+
       end
 
     private
