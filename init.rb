@@ -12,4 +12,8 @@ Breeze.hook :get_content_by_permalink do |permalink_or_content|
   end
 end
 
+Breeze.hook :component_info do |component_info|
+	component_info << {:name => 'Breeze Pay Online', :version => Breeze::PayOnline::VERSION }
+end
+
 require 'configuration'
