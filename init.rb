@@ -1,5 +1,5 @@
 Breeze.hook :admin_menu do |menu, user|
-  menu << { :name => "Payments", :path => "/admin/payments" }
+  menu << { :name => "Payments", :path => "/admin/pay_online/payments" }
 end
 
 Breeze.hook :get_content_by_permalink do |permalink_or_content|
