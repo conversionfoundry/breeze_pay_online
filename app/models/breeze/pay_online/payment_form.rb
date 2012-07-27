@@ -1,6 +1,6 @@
 module Breeze
   module PayOnline
-    class PaymentForm < Breeze::ApplyOnline::ApplicationPage
+    class PaymentForm < Breeze::ApplyOnline::ApplicationForm
 
       attr_accessor :payment
 

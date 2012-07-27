@@ -2,7 +2,7 @@ module Breeze
   module PayOnline
     PERMALINK = /\/(\w+)\/(pxpay_success|pxpay_failure)/
 
-    class PaymentPage < Breeze::ApplyOnline::ApplicationForm
+    class PaymentPage < Breeze::ApplyOnline::ApplicationPage
 
       attr_accessor :payment
 

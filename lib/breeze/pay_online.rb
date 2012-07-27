@@ -6,6 +6,6 @@ module Breeze
   end
 end
 
-# require "#{Breeze::Account::Engine.root}/app/models/breeze/customer.rb"
+# require "#{Breeze::PayOnline::Engine.root}/app/models/breeze/pay_online/payment_form.rb"
 require "#{Breeze::PayOnline::Engine.root}/init.rb"
 

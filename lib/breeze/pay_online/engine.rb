@@ -8,6 +8,8 @@ module Breeze
 
       config.to_prepare do
         ApplicationController.helper Breeze::PayOnline::ContentsHelper
+        Breeze::Content.register_class Breeze::PayOnline::PaymentForm
+
       end
 
     end
