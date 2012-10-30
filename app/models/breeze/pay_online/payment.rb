@@ -11,6 +11,7 @@ module Breeze
       field :succeeded, type: Boolean
       field :receipt_delivered, type: Boolean
       field :pxpay_response, type: Hash
+      field :currency, default: 'NZD'
 
       attr_accessor :connect_now
       attr_accessor :process_now
@@ -65,7 +66,7 @@ module Breeze
       end
 
       def pxpay_options
-        Hash.new.merge(pxpay_urls).merge(:merchant_reference => reference)
+        Hash.new.merge(pxpay_urls).merge(:merchant_reference => reference, :currency_input => currency)
       end
 
       # NB: Make new transaction id for every time we attempt to connect
