@@ -7,7 +7,7 @@ module Breeze
       attr_accessor :payment
 
       def self.find_by_permalink(permalink)
-        Rails.logger.debug "find_by_perm".red
+        # Rails.logger.debug "find_by_perm".red
         if permalink =~ Breeze::PayOnline::PERMALINK
           permalink = $`
           page = where(:permalink => permalink).first
