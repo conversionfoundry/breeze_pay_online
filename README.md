@@ -1,20 +1,8 @@
-Installation
-============
+# Breeze Pay Online
 
-In your `config/giternal.yml`:
+Copyright (c) 2011 LeftClick Ltc., released under the MIT license
 
-    breeze_pay_online:
-      repo: git@github.com:leftclick/breeze_pay_online.git
-      path: vendor/plugins
+## DESCRIPTION
 
-In your `Gemfile`:
+A payment module for the Breeze CMS
 
-    gem "pxpay", "0.2.6"
-
-Then run: 
-
-And finally, in `config/initializers/forms.rb`:
-
-    Breeze::Content.register_class Breeze::PayOnline::PaymentPage
-
-Don't forget to run `giternal update` and `bundle install` after these changes!

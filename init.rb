@@ -1,3 +1,7 @@
+require 'breeze'
+require 'breeze_apply_online'
+
+
 Breeze.hook :admin_menu do |menu, user|
   menu << { :name => "Payments", :path => "/admin/pay_online/payments" }
 end
