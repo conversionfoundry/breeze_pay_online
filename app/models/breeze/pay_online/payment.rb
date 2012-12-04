@@ -26,7 +26,7 @@ module Breeze
       alias_attribute :customer_name, :name
       alias_attribute :customer_email, :email
 
-      before_save :deliver_receipt, :if => [:succeeded, :receipt_undelivered?]
+      # before_save :deliver_receipt, :if => [:succeeded, :receipt_undelivered?]
 
       def redirect_url
         @redirect_url ||= pxpay_request.url rescue add_gateway_error
