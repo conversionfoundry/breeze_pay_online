@@ -1,4 +1,5 @@
 require "breeze/pay_online/engine"
+require "breeze/pay_online/version"
 
 module Breeze
   module PayOnline
